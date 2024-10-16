@@ -12,7 +12,7 @@ primo(carlos, ana).
 primo(luis, pedro).
 primo(maria, carlos).
 
-% Nivel de consanguinidad 
+% consanguinidad 
 
 nivelConsanguinidad(X, Y, 1) :- padre(X, Y).
 nivelConsanguinidad(X, Y, 1) :- madre(X, Y).
@@ -26,7 +26,7 @@ nivelConsanguinidad(X, Y, 3) :- tia(X, Y).
 nivelConsanguinidad(X, Y, 3) :- primo(X, Y).
 
 
-% Distribuir la herencia segun el nivel de consanguinidad
+% Distribuir la herencia segun nivel de consanguinidad
 distribuirHerencia(Total, PrimerNivel, SegundoNivel, TercerNivel, Distribucion) :-
     % Calcula la herencia por nivel de consanguinidad
     HerenciaPrimerNivel is Total * 0.30 * PrimerNivel,
@@ -34,7 +34,7 @@ distribuirHerencia(Total, PrimerNivel, SegundoNivel, TercerNivel, Distribucion) 
     HerenciaTercerNivel is Total * 0.10 * TercerNivel,
     % Sumar las partes calculadas
     Suma is HerenciaPrimerNivel + HerenciaSegundoNivel + HerenciaTercerNivel,
-    % Si la suma es mayor al total, ajustamos para que sea proporcional
+    % ajustar
     (Suma > Total -> 
         Ajuste is Total / Suma,
         HerenciaPrimerNivelAjustada is HerenciaPrimerNivel * Ajuste,
@@ -42,7 +42,7 @@ distribuirHerencia(Total, PrimerNivel, SegundoNivel, TercerNivel, Distribucion) 
         HerenciaTercerNivelAjustada is HerenciaTercerNivel * Ajuste,
         Distribucion = [HerenciaPrimerNivelAjustada, HerenciaSegundoNivelAjustada, HerenciaTercerNivelAjustada]
     ;
-    % Si la suma es menor que el total, redistribuir proporcionalmente
+    % si es menor redistribuir proporcionalmente
     (Suma < Total ->
         Diferencia is Total - Suma,
         % Redistribuir la diferencia proporcionalmente
@@ -52,7 +52,7 @@ distribuirHerencia(Total, PrimerNivel, SegundoNivel, TercerNivel, Distribucion) 
         HerenciaTercerNivelAjustada is HerenciaTercerNivel + (HerenciaTercerNivel * Proporcion),
         Distribucion = [HerenciaPrimerNivelAjustada, HerenciaSegundoNivelAjustada, HerenciaTercerNivelAjustada]
     ;
-        % Si la suma ya es exactamente igual al total
+        % si la suma ya es igual al total
         Distribucion = [HerenciaPrimerNivel, HerenciaSegundoNivel, HerenciaTercerNivel]
     )).
 
@@ -69,5 +69,4 @@ caso2 :-
 % Caso de prueba 3: $150,000, 1 hija, 2 hermanos, 2 primos
 caso3 :-
     distribuirHerencia(150000, 1, 2, 2, Distribucion),
-    write('Distribucion para $150,000: '), write(Distribucion), nl..
-
+    write('Distribucion para $150,000: '), write(Distribucion), nl.
